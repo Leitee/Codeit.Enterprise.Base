@@ -6,7 +6,6 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
-    using Codeit.NetStdLibrary.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.Abstractions.DataAccess;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;

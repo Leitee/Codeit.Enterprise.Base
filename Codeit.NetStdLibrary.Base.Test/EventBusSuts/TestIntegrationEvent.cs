@@ -1,6 +1,6 @@
 ﻿using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
 
-namespace Tests.EventBus
+namespace Codeit.NetStdLibrary.Base.Test.EventBusSuts
 {
     public class TestIntegrationEvent : IntegrationEventPayload
     {

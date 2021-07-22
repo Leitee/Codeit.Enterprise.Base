@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeit.NetStdLibrary.Base.Test", "Codeit.NetStdLibrary.Base.Test\Codeit.NetStdLibrary.Base.Test.csproj", "{4C353A9E-4A04-4EC6-AD4F-6AD3B272BC39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeit.NetStdLibrary.Abstractions", "Codeit.NetStdLibrary.Abstractions\Codeit.NetStdLibrary.Abstractions.csproj", "{468C4864-3149-486E-935A-7177FEDB5BCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeit.NetStdLibrary.Base.Abstractions", "Codeit.NetStdLibrary.Base.Abstractions\Codeit.NetStdLibrary.Base.Abstractions.csproj", "{468C4864-3149-486E-935A-7177FEDB5BCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

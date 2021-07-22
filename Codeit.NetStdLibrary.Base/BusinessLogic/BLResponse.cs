@@ -3,7 +3,7 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.BusinessLogic
 {
-    using Codeit.NetStdLibrary.Abstractions.BusinessLogic;
+    using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;

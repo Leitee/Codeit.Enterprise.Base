@@ -1,7 +1,7 @@
 ﻿using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
 using System.Threading.Tasks;
 
-namespace Tests.EventBus
+namespace Codeit.NetStdLibrary.Base.Test.EventBusSuts
 {
     public class TestIntegrationEventHandler : IIntegrationEventHandler<TestIntegrationEvent>
     {

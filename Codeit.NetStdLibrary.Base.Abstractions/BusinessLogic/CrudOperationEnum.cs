@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 
 /// </summary>
-namespace Codeit.NetStdLibrary.Abstractions.BusinessLogic
+namespace Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic
 {
     using System.ComponentModel;
 

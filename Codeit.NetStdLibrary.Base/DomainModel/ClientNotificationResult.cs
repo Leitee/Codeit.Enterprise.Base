@@ -3,7 +3,7 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.DomainModel
 {
-    using Codeit.NetStdLibrary.Abstractions.BusinessLogic;
+    using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.Common;
 
     public class ClientNotificationResult

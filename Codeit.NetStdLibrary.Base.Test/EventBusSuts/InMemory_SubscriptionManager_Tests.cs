@@ -2,7 +2,7 @@ using Codeit.NetStdLibrary.Base.Desentralized.EventBus;
 using System.Linq;
 using Xunit;
 
-namespace Tests.EventBus
+namespace Codeit.NetStdLibrary.Base.Test.EventBusSuts
 {
     public class InMemory_SubscriptionManager_Tests
     {

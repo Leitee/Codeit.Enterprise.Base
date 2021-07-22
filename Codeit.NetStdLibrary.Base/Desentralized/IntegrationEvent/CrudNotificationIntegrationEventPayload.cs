@@ -4,7 +4,7 @@
 namespace Codeit.NetStdLibrary.Base.Desentralized.IntegrationEvent
 {
     using Newtonsoft.Json;
-    using Codeit.NetStdLibrary.Abstractions.BusinessLogic;
+    using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
     using Codeit.NetStdLibrary.Base.DomainModel;
 

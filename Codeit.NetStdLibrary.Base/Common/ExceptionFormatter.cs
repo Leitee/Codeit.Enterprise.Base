@@ -4,7 +4,7 @@
 namespace Codeit.NetStdLibrary.Base.Common
 {
     using Microsoft.Extensions.Configuration;
-    using Codeit.NetStdLibrary.Abstractions.BusinessLogic;
+    using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.BusinessLogic;
     using System;
     using System.Collections.Generic;

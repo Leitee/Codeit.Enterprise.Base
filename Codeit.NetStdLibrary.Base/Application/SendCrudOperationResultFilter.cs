@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Codeit.NetStdLibrary.Abstractions.BusinessLogic;
-using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
-using Codeit.NetStdLibrary.Base.Desentralized.IntegrationEvent;
-using System.Net;
-using System.Threading.Tasks;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
-
+﻿/// <summary>
+/// Codeit Corp
+/// </summary>
 namespace Codeit.NetStdLibrary.Base.Application
 {
+    using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
+    using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
+    using Codeit.NetStdLibrary.Base.Desentralized.IntegrationEvent;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+    using System.Net;
+    using System.Threading.Tasks;
+    using ILogger = Microsoft.Extensions.Logging.ILogger;
+
     public class SendCrudOperationResultFilter : IAsyncActionFilter
     {
         private readonly ILogger _logger;
