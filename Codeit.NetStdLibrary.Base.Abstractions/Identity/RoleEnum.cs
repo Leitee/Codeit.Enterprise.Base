@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Differents generic roles to be used across application 
 /// </summary>
-namespace Codeit.NetStdLibrary.Abstractions.Identity
+namespace Codeit.NetStdLibrary.Base.Abstractions.Identity
 {
     using System.ComponentModel;
 

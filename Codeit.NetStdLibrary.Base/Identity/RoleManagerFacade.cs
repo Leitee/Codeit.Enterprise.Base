@@ -5,7 +5,6 @@ namespace Codeit.NetStdLibrary.Base.Identity
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Logging;
-    using Codeit.NetStdLibrary.Abstractions.Identity;
     using Codeit.NetStdLibrary.Base.Abstractions.Identity;
     using System.Collections.Generic;
     using System.Linq;

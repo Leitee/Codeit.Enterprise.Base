@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using Codeit.NetStdLibrary.Abstractions.Desentralized;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
+﻿/// <summary>
+/// Codeit Corp
+/// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
 {
+    using Microsoft.EntityFrameworkCore.Storage;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IIntegrationEventLogService
     {
         Task<IEnumerable<IntegrationEventLogEntry>> RetrieveEventLogsPendingToPublishAsync(Guid transactionId);

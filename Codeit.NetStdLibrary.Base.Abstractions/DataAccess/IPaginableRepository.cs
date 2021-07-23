@@ -3,7 +3,6 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.DataAccess
 {
-    using Codeit.NetStdLibrary.Abstractions.DomainModel;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
     using System;
     using System.Linq;

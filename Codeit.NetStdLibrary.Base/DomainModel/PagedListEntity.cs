@@ -3,7 +3,6 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.DomainModel
 {
-    using Codeit.NetStdLibrary.Abstractions.DomainModel;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
     using System.Linq;
 

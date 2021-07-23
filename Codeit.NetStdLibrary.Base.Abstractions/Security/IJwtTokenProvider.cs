@@ -3,7 +3,7 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions
 {
-    using Codeit.NetStdLibrary.Abstractions.Identity;
+    using Codeit.NetStdLibrary.Base.Abstractions.Identity;
 
     public interface IJwtTokenProvider
     {

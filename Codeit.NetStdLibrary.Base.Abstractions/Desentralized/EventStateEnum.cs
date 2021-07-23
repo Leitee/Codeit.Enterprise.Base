@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 
 /// </summary>
-namespace Codeit.NetStdLibrary.Abstractions.Desentralized
+namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
 {
     public enum EventStateEnum
     {

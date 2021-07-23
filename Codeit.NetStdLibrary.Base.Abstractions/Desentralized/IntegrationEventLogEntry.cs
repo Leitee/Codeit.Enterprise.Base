@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
-using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
+﻿/// <summary>
+/// Codeit Corp
+/// </summary>
+namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
+{
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace Codeit.NetStdLibrary.Abstractions.Desentralized
-{
     public class IntegrationEventLogEntry
     {
         private IntegrationEventLogEntry() { }

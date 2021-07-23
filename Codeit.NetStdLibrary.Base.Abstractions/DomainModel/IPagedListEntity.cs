@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 
 /// </summary>
-namespace Codeit.NetStdLibrary.Abstractions.DomainModel
+namespace Codeit.NetStdLibrary.Base.Abstractions.DomainModel
 {
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
     using System.Linq;

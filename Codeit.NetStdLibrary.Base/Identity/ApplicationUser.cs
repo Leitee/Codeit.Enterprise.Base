@@ -4,7 +4,7 @@
 namespace Codeit.NetStdLibrary.Base.Identity
 {
     using Microsoft.AspNetCore.Identity;
-    using Codeit.NetStdLibrary.Abstractions.Identity;
+    using Codeit.NetStdLibrary.Base.Abstractions.Identity;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
     using System;
 
