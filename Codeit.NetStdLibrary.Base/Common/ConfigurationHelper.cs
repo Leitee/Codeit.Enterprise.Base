@@ -7,7 +7,7 @@ namespace Codeit.NetStdLibrary.Base.Common
     public static partial class CodeitUtils
     {
         private static string environmentName = EnvironmentName.Development;
-        public static IConfiguration GetBasicConfiguration(IConfigurationBuilder configurationBuilder)
+        public static IConfiguration BuildDefaultSettings(IConfigurationBuilder configurationBuilder)
         {
             var basePath = Directory.GetCurrentDirectory();
             var configuration = configurationBuilder
@@ -23,9 +23,9 @@ namespace Codeit.NetStdLibrary.Base.Common
 
     public static class ConfigurationExtension
     {
-        public static IConfiguration GetBasicConfiguration(this IConfigurationBuilder configurationBuilder)
+        public static IConfiguration BuildDefaultSettings(this IConfigurationBuilder configurationBuilder)
         {
-            return CodeitUtils.GetBasicConfiguration(configurationBuilder);
+            return CodeitUtils.BuildDefaultSettings(configurationBuilder);
         }
     }
 }
