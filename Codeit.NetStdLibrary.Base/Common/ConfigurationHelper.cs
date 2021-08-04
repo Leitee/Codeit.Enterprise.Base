@@ -13,7 +13,7 @@ namespace Codeit.NetStdLibrary.Base.Common
             var configuration = configurationBuilder
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{environmentName}.json", optional: true)
+                //.AddJsonFile($"appsettings.{environmentName}.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
 
