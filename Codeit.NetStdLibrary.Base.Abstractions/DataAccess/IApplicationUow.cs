@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.DataAccess
 {
@@ -19,7 +19,7 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.DataAccess
         /// </summary>
         /// <typeparam name="TEntity">Type of contect entity.</typeparam>
         /// <returns>Repository</returns>
-        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity;
+        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity<Guid>;
 
         /// <summary>
         /// Save pending changes to the database and return true if there was at least 1 row affected

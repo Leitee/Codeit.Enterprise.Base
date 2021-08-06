@@ -15,7 +15,7 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.DataAccess
     /// 
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IRepository<TEntity> : ICrudRepository<TEntity, Guid>, IPaginableRepository<TEntity> where TEntity : class, IEntity
+    public interface IRepository<TEntity> : ICrudRepository<TEntity, Guid>, IPaginableRepository<TEntity> where TEntity : class, IEntity<Guid>
     {
         /// <summary>
         /// 

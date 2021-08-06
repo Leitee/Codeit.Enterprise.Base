@@ -1,16 +1,16 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.BusinessLogic
 {
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
     using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.Abstractions.DataAccess;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
     using Codeit.NetStdLibrary.Base.Common;
     using Codeit.NetStdLibrary.Base.DataAccess;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     using System;
 
     public abstract class BaseService
@@ -60,7 +60,7 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
         }
     }
 
-    public abstract class BaseService<TEntity, TDto> : BaseService<IApplicationUow> where TEntity : IEntity where TDto : IDto
+    public abstract class BaseService<TEntity, TDto> : BaseService<IApplicationUow> where TEntity : IEntity<Guid> where TDto : IDto
     {
         protected readonly IMapperCore<TEntity, TDto> _mapper;
 

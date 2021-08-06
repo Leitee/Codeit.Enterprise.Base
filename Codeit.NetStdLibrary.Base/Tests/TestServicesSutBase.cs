@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Tests
 {
@@ -12,7 +12,7 @@ namespace Codeit.NetStdLibrary.Base.Tests
     using System;
     using System.Threading;
 
-    public abstract class TestServicesSutBase<TService, TEntity> : IDisposable where TEntity : class, IEntity
+    public abstract class TestServicesSutBase<TService, TEntity> : IDisposable where TEntity : class, IEntity<Guid>
     {
         private readonly Mock<IApplicationUow> _uowMock = new Mock<IApplicationUow>();
         protected Mock<IRepository<TEntity>> _repoEntityMock = new Mock<IRepository<TEntity>>();

@@ -1,10 +1,10 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.DataAccess
 {
-    using Microsoft.EntityFrameworkCore;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
 
@@ -87,7 +87,7 @@ namespace Codeit.NetStdLibrary.Base.DataAccess
         /// You can substitute an alternative factory for the default one by adding
         /// a repository factory for type "T" to <see cref="_repositoryFactories"/>.
         /// </remarks>
-        public Func<TContext, object> GetRepositoryFactoryForEntityType<TEntity>() where TEntity : class, IEntity
+        public Func<TContext, object> GetRepositoryFactoryForEntityType<TEntity>() where TEntity : class, IEntity<Guid>
         {
             return GetRepositoryFactory<TEntity>() ?? DefaultEntityRepositoryFactory<TEntity>();
         }
@@ -96,6 +96,6 @@ namespace Codeit.NetStdLibrary.Base.DataAccess
         /// Default factory for a <see cref="IRepository{T}"/> where T is an entity.
         /// </summary>
         /// <typeparam name="TEntity">Type of the repository's root entity</typeparam>
-        protected abstract Func<TContext, object> DefaultEntityRepositoryFactory<TEntity>() where TEntity : class, IEntity;
+        protected abstract Func<TContext, object> DefaultEntityRepositoryFactory<TEntity>() where TEntity : class, IEntity<Guid>;
     }
 }

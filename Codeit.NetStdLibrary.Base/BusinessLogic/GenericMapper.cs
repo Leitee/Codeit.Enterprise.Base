@@ -1,14 +1,15 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.BusinessLogic
 {
     using AutoMapper;
     using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
+    using System;
     using System.Collections.Generic;
 
-    public abstract class GenericMapper<TEntity, TDto> : IMapperCore<TEntity, TDto> where TEntity : IEntity where TDto : IDto
+    public abstract class GenericMapper<TEntity, TDto> : IMapperCore<TEntity, TDto> where TEntity : IEntity<Guid> where TDto : IDto
     {
         /// <summary>
         /// 

@@ -1,17 +1,15 @@
-﻿using System;
-/// <summary>
-/// 
+﻿/// <summary>
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.DomainModel
 {
-    public interface IDto<TEntity> : IDto where TEntity : IEntity
-    {
-        public Guid Id { get; set; }
-    }
-
     public interface IDto
     {
-        
+    }
+
+    public interface IDto<TId> : IDto
+    {
+        TId Id { get; set; }
     }
 
     public interface IRequestDto

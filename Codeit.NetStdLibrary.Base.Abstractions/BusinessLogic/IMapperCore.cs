@@ -1,10 +1,11 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic
 {
     using AutoMapper;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
+    using System;
     using System.Collections.Generic;
 
     //public interface IMapperCore<in TInputEntity, out TOutputEntity>
@@ -19,7 +20,7 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic
     /// </summary>
     /// <typeparam name="TEntity">A model enity</typeparam>
     /// <typeparam name="TDto">A dto class</typeparam>
-    public interface IMapperCore<TEntity, TDto> where TEntity : IEntity where TDto : IDto
+    public interface IMapperCore<TEntity, TDto> where TEntity : IEntity<Guid> where TDto : IDto
     {
         /// <summary>
         /// Set a new mapper and overrides the current map configuration.

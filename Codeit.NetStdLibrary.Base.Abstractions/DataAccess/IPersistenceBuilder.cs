@@ -1,12 +1,12 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.DataAccess
 {
     using Microsoft.EntityFrameworkCore;
 
-    public interface IPersistenceBuider
+    public interface IPersistenceBuilder
     {
-        void ConfigurePersistence(DbContextOptionsBuilder options);
+        void BuildConfiguration(DbContextOptionsBuilder options);
     }
 }

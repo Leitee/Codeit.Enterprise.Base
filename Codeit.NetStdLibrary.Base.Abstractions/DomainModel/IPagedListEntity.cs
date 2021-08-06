@@ -1,16 +1,16 @@
 ﻿/// <summary>
-/// 
+/// Codeit Corp
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.DomainModel
 {
-    using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
+    using System;
     using System.Linq;
 
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IPagedListEntity<TEntity> where TEntity : IEntity
+    public interface IPagedListEntity<TEntity> where TEntity : IEntity<Guid>
     {
         /// <summary>
         /// 

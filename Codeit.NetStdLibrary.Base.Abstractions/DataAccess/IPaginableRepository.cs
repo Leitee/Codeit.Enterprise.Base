@@ -15,7 +15,7 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.DataAccess
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TId">Id Type</typeparam>
-    public interface IPaginableRepository<TEntity> where TEntity : class, IEntity
+    public interface IPaginableRepository<TEntity> where TEntity : class, IEntity<Guid>
     {
         /// <summary>
         /// 

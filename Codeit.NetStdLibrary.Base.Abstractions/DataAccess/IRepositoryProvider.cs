@@ -3,9 +3,9 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions
 {
-    using Microsoft.EntityFrameworkCore;
     using Codeit.NetStdLibrary.Base.Abstractions.DataAccess;
     using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
+    using Microsoft.EntityFrameworkCore;
     using System;
 
     /// <summary>
@@ -31,7 +31,7 @@ namespace Codeit.NetStdLibrary.Base.Abstractions
         /// <typeparam name="TEntity">
         /// Root entity type of the <see cref="IRepository{TEntity}"/>.
         /// </typeparam>
-        IRepository<TEntity> GetRepositoryForEntityType<TEntity>() where TEntity : class, IEntity;
+        IRepository<TEntity> GetRepositoryForEntityType<TEntity>() where TEntity : class, IEntity<Guid>;
 
         /// <summary>
         /// Get a repository of type T.
