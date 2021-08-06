@@ -4,20 +4,23 @@
 namespace Codeit.NetStdLibrary.Base.Common
 {
     using Microsoft.Extensions.Configuration;
+    using System.Linq;
 
-    public class BaseSettings<T> where T : class
+    public class BaseSettings<TSettings> where TSettings : class
     {
         public string Environment { get; set; }
-        public bool IsDevelopment { get { return Environment == "Development"; } }
+        public bool IsDevelopment { get { return Environment is not "Production"; } }
 
-        public static T GetSettings(IConfiguration config)
+        public static TSettings GetSettings(IConfiguration config)
         {
-            return config.Get<T>();
+            return config.Get<TSettings>();
         }
 
-        public static T GetSection(IConfiguration config)
+        public static TSection GetSection<TSection>(IConfiguration config)
         {
-            return config.GetSection(typeof(T).Name).Get<T>();
+            var prueba = config.GetChildren().SingleOrDefault(ch => ch.GetType() == typeof(TSection));
+
+            return config.GetSection(typeof(TSection).Name).Get<TSection>();
         }
 
     }

@@ -9,7 +9,6 @@ namespace Codeit.NetStdLibrary.Base.DataAccess
     {
         public bool UseDatabase { get; set; }
         public string DatabaseName { get; set; }
-        public string DatabaseUrl { get; set; }
-        public string LoggerServerUrl { get; set; }
+        public string DatabaseConnection { get; set; }
     }
 }
