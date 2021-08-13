@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// Codeit Corp
 /// </summary>
-namespace Codeit.NetStdLibrary.Base.Abstractions.DomainModel
+namespace Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic
 {
     public interface IDto
     {

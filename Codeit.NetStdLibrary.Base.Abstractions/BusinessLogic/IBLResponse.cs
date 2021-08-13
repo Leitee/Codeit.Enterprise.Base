@@ -24,7 +24,7 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic
 
     public interface IBLListResponse<TDto> : IBLResponse
     {
-        IEnumerable<TDto> Payloads { get; set; }
+        ICollection<TDto> Payloads { get; set; }
     }
 
     public interface IBLPagedResponse<TDto> : IBLListResponse<TDto>

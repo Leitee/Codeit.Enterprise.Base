@@ -31,6 +31,16 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
 
     public class BLSingleResponse<TDto> : BLResponse, IBLSingleResponse<TDto>
     {
+        public BLSingleResponse() : base()
+        {
+
+        }
+
+        public BLSingleResponse(TDto payload) : this()
+        {
+            Payload = payload;
+        }
+
         public TDto Payload { get; set; }
         public new static IBLSingleResponse<TDto> GetNoDataResponse(HttpStatusCode statusCode = HttpStatusCode.OK)
         {
@@ -40,7 +50,17 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
 
     public class BLListResponse<TDto> : BLResponse, IBLListResponse<TDto>
     {
-        public IEnumerable<TDto> Payloads { get; set; }
+        public BLListResponse() : base()
+        {
+
+        }
+
+        public BLListResponse(ICollection<TDto> payloads) : this()
+        {
+            Payloads = payloads;
+        }
+
+        public ICollection<TDto> Payloads { get; set; }
         public new static IBLListResponse<TDto> GetNoDataResponse(HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             return new BLListResponse<TDto>() { ResponseCode = statusCode };
@@ -49,6 +69,16 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
 
     public class BLPagedResponse<TDto> : BLListResponse<TDto>, IBLPagedResponse<TDto>
     {
+        public BLPagedResponse() : base()
+        {
+
+        }
+
+        public BLPagedResponse(ICollection<TDto> payloads) : this()
+        {
+            Payloads = payloads;
+        }
+
         public int CurrentPage { get; set; }
 
         public int RowsPerPage { get; set; }

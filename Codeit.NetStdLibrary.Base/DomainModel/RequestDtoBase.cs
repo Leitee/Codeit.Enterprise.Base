@@ -1,4 +1,4 @@
-﻿using Codeit.NetStdLibrary.Base.Abstractions.DomainModel;
+﻿using Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic;
 using System;
 using System.Collections.Generic;
 using System.Text;

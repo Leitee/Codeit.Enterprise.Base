@@ -54,10 +54,10 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
             return MappingConfiguration.Map<TDto>(pEntity);
         }
 
-        public virtual IEnumerable<TDto> Map(IEnumerable<TEntity> pEntities)
+        public virtual ICollection<TDto> Map(ICollection<TEntity> pEntities)
         {
             if (pEntities == null) return null;
-            return MappingConfiguration.Map<IEnumerable<TDto>>(pEntities);
+            return MappingConfiguration.Map<ICollection<TDto>>(pEntities);
         }
 
         public virtual TEntity Map(TDto pDto)
@@ -66,10 +66,10 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
             return MappingConfiguration.Map<TEntity>(pDto);
         }
 
-        public virtual IEnumerable<TEntity> Map(IEnumerable<TDto> pDtos)
+        public virtual ICollection<TEntity> Map(ICollection<TDto> pDtos)
         {
             if (pDtos == null) return null;
-            return MappingConfiguration.Map<IEnumerable<TEntity>>(pDtos);
+            return MappingConfiguration.Map<ICollection<TEntity>>(pDtos);
         }
     }
 
@@ -91,11 +91,11 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
             return mapper.Map<TOutputEntity>(pEntity);
         }
 
-        public virtual IEnumerable<TOutputEntity> MapEntity<TInputEntity, TOutputEntity>(IEnumerable<TInputEntity> pEntities, IMapper pMapperConfig = null)
+        public virtual ICollection<TOutputEntity> MapEntity<TInputEntity, TOutputEntity>(ICollection<TInputEntity> pEntities, IMapper pMapperConfig = null)
         {
             if (pEntities == null) return null;
             var mapper = pMapperConfig ?? CreateCustomMap<TInputEntity, TOutputEntity>();
-            return mapper.Map<IEnumerable<TOutputEntity>>(pEntities);
+            return mapper.Map<ICollection<TOutputEntity>>(pEntities);
         }
 
         public virtual TBaseClass MapToBaseClass<TDerivedClass, TBaseClass>(TDerivedClass pEntity)
@@ -109,7 +109,7 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
             .Map<TBaseClass>(pEntity);
         }
 
-        public virtual IEnumerable<TBaseClass> MapToBaseClass<TDerivedClass, TBaseClass>(IEnumerable<TDerivedClass> pEntities)
+        public virtual ICollection<TBaseClass> MapToBaseClass<TDerivedClass, TBaseClass>(ICollection<TDerivedClass> pEntities)
         {
             if (pEntities == null) return null;
             return new MapperConfiguration(c =>
@@ -117,7 +117,7 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
                 c.CreateMap<TDerivedClass, TBaseClass>();
             })
             .CreateMapper()
-            .Map<IEnumerable<TBaseClass>>(pEntities);
+            .Map<ICollection<TBaseClass>>(pEntities);
         }
     }
 }

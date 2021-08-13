@@ -44,19 +44,19 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.BusinessLogic
         /// </summary>
         /// <param name="pEntities">A list of entity</param>
         /// <returns>A new list of DTO</returns>
-        IEnumerable<TDto> Map(IEnumerable<TEntity> pEntities);
+        ICollection<TDto> Map(ICollection<TEntity> pEntities);
         /// <summary>
         /// Gets a new entity list of type <typeparamref name="TEntity"/> from a DTO list of type <typeparamref name="TDto"/>.
         /// </summary>
         /// <param name="pDtos">A list of DTO</param>
         /// <returns>A new list of model entity</returns>
-        IEnumerable<TEntity> Map(IEnumerable<TDto> pDtos);
+        ICollection<TEntity> Map(ICollection<TDto> pDtos);
     }
     public interface IMapperCore
     {
         TOutputEntity MapEntity<TInputEntity, TOutputEntity>(TInputEntity pEntity, IMapper pMapperConfig = null);
-        IEnumerable<TOutputEntity> MapEntity<TInputEntity, TOutputEntity>(IEnumerable<TInputEntity> pEntities, IMapper pMapperConfig = null);
+        ICollection<TOutputEntity> MapEntity<TInputEntity, TOutputEntity>(ICollection<TInputEntity> pEntities, IMapper pMapperConfig = null);
         TBaseClass MapToBaseClass<TDerivedClass, TBaseClass>(TDerivedClass pEntity);
-        IEnumerable<TBaseClass> MapToBaseClass<TDerivedClass, TBaseClass>(IEnumerable<TDerivedClass> pEntities);
+        ICollection<TBaseClass> MapToBaseClass<TDerivedClass, TBaseClass>(ICollection<TDerivedClass> pEntities);
     }
 }
