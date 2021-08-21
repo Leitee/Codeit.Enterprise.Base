@@ -32,7 +32,7 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
 
         protected BaseService(TUow applicationUow, ILoggerFactory loggerFactory, IConfiguration configuration) : base(loggerFactory)
         {
-            _formatter = new ExceptionFormatter(configuration ?? throw new BusinessLogicTierException(nameof(configuration)));
+            _formatter = new ExceptionFormatter(configuration ?? throw new BusinessLogicLayerException(nameof(configuration)));
             _settings = BLSettings.GetSettings(configuration);
             _uow = applicationUow;
         }
@@ -43,10 +43,10 @@ namespace Codeit.NetStdLibrary.Base.BusinessLogic
         /// <returns>An exception to be thrown</returns>
         protected Exception HandleSVCException(Exception ex)
         {
-            if (ex is DataAccessTierException)
+            if (ex is DataAccessLayerException)
                 return ex;
 
-            return new BusinessLogicTierException(ex);
+            return new BusinessLogicLayerException(ex);
         }
 
         protected void HandleSVCException(IBLResponse pResponse, Exception pEx)

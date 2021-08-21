@@ -8,25 +8,25 @@ namespace Codeit.NetStdLibrary.Base.DataAccess
     /// <summary>
     /// 
     /// </summary>
-    public class DataAccessTierException : Exception
+    public class DataAccessLayerException : Exception
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="msg"></param>
-        public DataAccessTierException(string msg) : base(msg) { }
+        public DataAccessLayerException(string msg) : base(msg) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="ex"></param>
-        public DataAccessTierException(string msg, Exception ex) : base(msg, ex) { }
+        public DataAccessLayerException(string msg, Exception ex) : base(msg, ex) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ex"></param>
-        public DataAccessTierException(Exception ex) : base("Error at Data Access Layer. ", ex) { }
+        public DataAccessLayerException(Exception ex) : base("Error at Data Access Layer. ", ex) { }
     }
 }

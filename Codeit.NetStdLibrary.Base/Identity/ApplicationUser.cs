@@ -21,15 +21,15 @@ namespace Codeit.NetStdLibrary.Base.Identity
             NormalizedEmail = Email.ToUpper();
         }
 
-        public virtual string FirstName { get; set; }
+        public string FirstName { get; set; }
 
-        public virtual string LastName { get; set; }
+        public string LastName { get; set; }
 
-        public virtual DateTime JoinDate { get; set; }
+        public DateTime JoinDate { get; set; }
 
-        public virtual string FullName { get { return $"{LastName.ToUpper()} {FirstName}"; } }
+        public string FullName { get { return $"{LastName.ToUpper()} {FirstName}"; } }
 
-        public virtual bool Deleted { get; set; }
+        public bool Deleted { get; set; }
 
         public override bool Equals(object obj)
         {

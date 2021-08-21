@@ -19,7 +19,7 @@ namespace Codeit.NetStdLibrary.Base.Application
 
         public ExceptionHandlerMiddleware(RequestDelegate next, IConfiguration configuration)
         {
-            _formatter = new ExceptionFormatter(configuration ?? throw new BusinessLogicTierException(nameof(configuration)));
+            _formatter = new ExceptionFormatter(configuration ?? throw new BusinessLogicLayerException(nameof(configuration)));
             _next = next;
         }
 
@@ -42,10 +42,10 @@ namespace Codeit.NetStdLibrary.Base.Application
 
             switch (pEx)
             {
-                case DataAccessTierException dataAccessTierException:
+                case DataAccessLayerException dataAccessTierException:
                     _formatter.FormatException(ref response, dataAccessTierException);
                     break;
-                case BusinessLogicTierException businessLogicTierException:
+                case BusinessLogicLayerException businessLogicTierException:
                     _formatter.FormatException(ref response, businessLogicTierException);
                     break;
                 case ValidationException validationException:

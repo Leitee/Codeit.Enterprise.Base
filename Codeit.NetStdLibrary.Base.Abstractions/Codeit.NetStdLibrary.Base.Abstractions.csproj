@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
     <Authors>Leonardo Moreno</Authors>
     <Company>Codeit Corp</Company>
     <Description>A library containing all abstraction used for enterprise applications development.</Description>
