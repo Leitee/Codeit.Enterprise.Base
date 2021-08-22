@@ -2,7 +2,7 @@
   <PropertyGroup Label="SDK Versions">
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version Label="Assembly version">0.9.1</Version>
+    <Version>0.9.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly information">
