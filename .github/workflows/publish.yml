@@ -6,9 +6,8 @@ on:
   pull_request:
     branches: [ master ]
 
-jobs:
+jobs:    
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +22,13 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      
-  # Publish
+    
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
     - name: publish on version change
       id: publish_nuget
       uses: brandedoutcast/publish-nuget@v2.5.2
