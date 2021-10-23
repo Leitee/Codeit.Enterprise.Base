@@ -5,9 +5,15 @@ namespace Codeit.NetStdLibrary.Base.DataAccess
 {
     public class DALSettings
     {
-        public bool UseDatabase { get; set; }
+        public const string SectionKey = "DalSection";
+        public bool? UseDatabase { get; set; }
         public string DatabaseName { get; set; }
         public string DatabaseConnection { get; set; }
-        public bool EnableDetailedDebug { get; set; }
+        public bool? EnableDetailedDebug { get; set; }
+
+        public override string ToString()
+        {
+            return nameof(DALSettings);
+        }
     }
 }
