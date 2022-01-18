@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Codeit.NetStdLibrary.Base\Codeit.NetStdLibrary.Base.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
-  </ItemGroup>
-
 </Project>
