@@ -12,7 +12,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.9.0
       with:
@@ -27,28 +26,14 @@ jobs:
     - name: Test
       run: dotnet test -c Release --no-restore --no-build --verbosity normal
     
-  publish_abstractions:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Pack
+    - name: Pack Abstractions
       run: dotnet pack Codeit.NetStdLibrary.Base.Abstractions/Codeit.NetStdLibrary.Base.Abstractions.csproj -c Release --no-restore --no-build -o .
 
-    - name: Publish
+    - name: Publish Abstractions
       run: dotnet nuget push *.nupkg --skip-duplicate -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
 
-  publish_base:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Pack
+    - name: Pack Base
       run: dotnet pack Codeit.NetStdLibrary.Base/Codeit.NetStdLibrary.Base.csproj -c Release --no-restore --no-build -o .
 
-    - name: Publish
+    - name: Publish Base
       run: dotnet nuget push *.nupkg --skip-duplicate -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
