@@ -12,6 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.9.0
       with:
@@ -31,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
+
     - name: Pack
       run: dotnet pack Codeit.NetStdLibrary.Base.Abstractions/Codeit.NetStdLibrary.Base.Abstractions.csproj -c Release --no-restore --no-build -o .
 
@@ -42,6 +45,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
+
     - name: Pack
       run: dotnet pack Codeit.NetStdLibrary.Base/Codeit.NetStdLibrary.Base.csproj -c Release --no-restore --no-build -o .
 
