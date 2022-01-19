@@ -36,7 +36,7 @@ namespace Codeit.NetStdLibrary.Base.Application
                 var succedded = statusCode.HasValue && statusCode.Value == (int)HttpStatusCode.OK;
                 var msg = succedded ? "PRODUCT CREATED" : "PRODUCT CREATION FAILED";
                 _logger.LogDebug($"Publishing notification event: {msg} to client id:{connId}.");
-                var payload = new CrudNotificationIntegrationEventPayload(connId, callbackName, GetOperationType(request), succedded);
+                var payload = new ClientNotificationIntegrationEventPayload(connId, callbackName, GetOperationType(request), succedded);
                 _eventBus.Publish(payload);
             }
         }

@@ -7,11 +7,17 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.DomainModel
     /// Provides a generic type Id to be used across application.
     /// </summary>
     /// <typeparam name="TId"></typeparam>
-    public interface IEntity<TId>
+    public interface IEntity<TId> : IEntity
     {
         /// <summary>
         /// Entity unique identifier across application. 
         /// </summary>
         TId Id { get; set; }
     }
+
+    public interface IEntity
+    {
+
+    }
+
 }

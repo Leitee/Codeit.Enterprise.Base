@@ -8,7 +8,7 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.IntegrationEvent
     using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
     using Codeit.NetStdLibrary.Base.DomainModel;
 
-    public class CrudNotificationIntegrationEventPayload : IntegrationEventPayload
+    public class ClientNotificationIntegrationEventPayload : IntegrationEventPayload
     {
         [JsonProperty]
         public string WSConnectionId { get; set; }
@@ -18,7 +18,7 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.IntegrationEvent
         public ClientNotificationResult Payload { get; set; }
 
         [JsonConstructor]
-        public CrudNotificationIntegrationEventPayload(string connectionId, string callbackMethod, CrudOperationEnum operationType, bool succeeded) : base()
+        public ClientNotificationIntegrationEventPayload(string connectionId, string callbackMethod, CrudOperationEnum operationType, bool succeeded) : base()
         {
             WSConnectionId = connectionId;
             CallBackMethod = callbackMethod;
