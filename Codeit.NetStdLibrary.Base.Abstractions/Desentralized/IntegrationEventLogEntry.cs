@@ -3,10 +3,10 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
 {
-using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+    using System.Text.Json;
+    using System;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     public class IntegrationEventLogEntry
     {
@@ -16,7 +16,10 @@ using System.Linq;
             EventId = @event.Id;
             CreationTime = @event.CreationDate;
             EventTypeName = @event.GetType().FullName;
-            Content = JsonConvert.SerializeObject(@event);
+            Content = JsonSerializer.Serialize(@event, @event.GetType(), new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
             State = EventStateEnum.NotPublished;
             TimesSent = 0;
             TransactionId = transactionId.ToString();
@@ -35,7 +38,7 @@ using System.Linq;
 
         public IntegrationEventLogEntry DeserializeJsonContent(Type type)
         {
-            IntegrationEvent = JsonConvert.DeserializeObject(Content, type) as IntegrationEventPayload;
+            IntegrationEvent = JsonSerializer.Deserialize(Content, type, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }) as IntegrationEventPayload;
             return this;
         }
     }

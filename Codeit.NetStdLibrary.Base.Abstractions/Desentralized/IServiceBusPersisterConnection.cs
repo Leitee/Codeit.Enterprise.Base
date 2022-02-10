@@ -3,13 +3,13 @@
 /// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
 {
-    using Microsoft.Azure.ServiceBus;
+    using Azure.Messaging.ServiceBus;
+    using Azure.Messaging.ServiceBus.Administration;
     using System;
 
     public interface IServiceBusPersisterConnection : IDisposable
     {
-        ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder { get; }
-
-        ITopicClient CreateModel();
+        ServiceBusClient TopicClient { get; }
+        ServiceBusAdministrationClient AdministrationClient { get; }
     }
 }
