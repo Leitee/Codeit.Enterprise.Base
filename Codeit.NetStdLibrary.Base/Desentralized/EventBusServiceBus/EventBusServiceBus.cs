@@ -1,58 +1,63 @@
-﻿namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusServiceBus
+﻿
+namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusServiceBus
 {
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Azure.ServiceBus;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
     using Codeit.NetStdLibrary.Base.Desentralized.EventBus;
     using System;
-    using System.Text;
     using System.Threading.Tasks;
+    using Azure.Messaging.ServiceBus;
+    using System.Text;
+    using Azure.Messaging.ServiceBus.Administration;
+    using Newtonsoft.Json;
 
     public class EventBusServiceBus : IEventBus
     {
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
         private readonly ILogger<EventBusServiceBus> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly SubscriptionClient _subscriptionClient;
-        private readonly IWebHost _host;
+        private readonly string _topicName = "codeit_event_bus";
+        private readonly string _subscriptionName;
+        private ServiceBusSender _sender;
+        private ServiceBusProcessor _processor;
+        private readonly IServiceProvider _serviceProvider;
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
-            ILogger<EventBusServiceBus> logger, IEventBusSubscriptionsManager subsManager, string subscriptionClientName,
-            IWebHost host)
+                                  ILogger<EventBusServiceBus> logger,
+                                  IEventBusSubscriptionsManager subsManager,
+                                  string subscriptionClientName,
+                                  IServiceProvider serviceProvider)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
-
-            _subscriptionClient = new SubscriptionClient(serviceBusPersisterConnection.ServiceBusConnectionStringBuilder,
-                subscriptionClientName);
-            _host = host;
+            _serviceProvider = serviceProvider;
+            _subscriptionName = subscriptionClientName;
+            _sender = _serviceBusPersisterConnection.TopicClient.CreateSender(_topicName);
+            ServiceBusProcessorOptions options = new ServiceBusProcessorOptions { MaxConcurrentCalls = 10, AutoCompleteMessages = false };
+            _processor = _serviceBusPersisterConnection.TopicClient.CreateProcessor(_topicName, _subscriptionName, options);
 
             RemoveDefaultRule();
-            RegisterSubscriptionClientMessageHandler();
+            RegisterSubscriptionClientMessageHandlerAsync().GetAwaiter().GetResult();
         }
 
         public void Publish(IntegrationEventPayload @event)
         {
             var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFFIX, "");
-            var jsonMessage = JsonConvert.SerializeObject(@event);
+            var jsonMessage = System.Text.Json.JsonSerializer.Serialize(@event, @event.GetType());
             var body = Encoding.UTF8.GetBytes(jsonMessage);
 
-            var message = new Message
+            var message = new ServiceBusMessage
             {
                 MessageId = Guid.NewGuid().ToString(),
-                Body = body,
-                Label = eventName,
+                Body = new BinaryData(body),
+                Subject = eventName,
             };
 
-            var topicClient = _serviceBusPersisterConnection.CreateModel();
-
-            topicClient.SendAsync(message)
+            _sender.SendMessageAsync(message)
                 .GetAwaiter()
                 .GetResult();
         }
@@ -76,9 +81,9 @@
             {
                 try
                 {
-                    _subscriptionClient.AddRuleAsync(new RuleDescription
+                    _serviceBusPersisterConnection.AdministrationClient.CreateRuleAsync(_topicName, _subscriptionName, new CreateRuleOptions
                     {
-                        Filter = new CorrelationFilter { Label = eventName },
+                        Filter = new CorrelationRuleFilter() { Subject = eventName },
                         Name = eventName
                     }).GetAwaiter().GetResult();
                 }
@@ -93,6 +98,14 @@
             _subsManager.AddSubscription<T, TH>();
         }
 
+        public void UnsubscribeDynamic<TH>(string eventName)
+            where TH : IDynamicIntegrationEventHandler
+        {
+            _logger.LogInformation("Unsubscribing from dynamic event {EventName}", eventName);
+
+            _subsManager.RemoveDynamicSubscription<TH>(eventName);
+        }
+
         public void Unsubscribe<T, TH>()
             where T : IntegrationEventPayload
             where TH : IIntegrationEventHandler<T>
@@ -101,12 +114,13 @@
 
             try
             {
-                _subscriptionClient
-                 .RemoveRuleAsync(eventName)
-                 .GetAwaiter()
-                 .GetResult();
+                _serviceBusPersisterConnection
+                    .AdministrationClient
+                    .DeleteRuleAsync(_topicName, _subscriptionName, eventName)
+                    .GetAwaiter()
+                    .GetResult();
             }
-            catch (MessagingEntityNotFoundException)
+            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityNotFound)
             {
                 _logger.LogWarning("The messaging entity {eventName} Could not be found.", eventName);
             }
@@ -116,44 +130,55 @@
             _subsManager.RemoveSubscription<T, TH>();
         }
 
-        public void UnsubscribeDynamic<TH>(string eventName)
-            where TH : IDynamicIntegrationEventHandler
-        {
-            _logger.LogInformation("Unsubscribing from dynamic event {EventName}", eventName);
-
-            _subsManager.RemoveDynamicSubscription<TH>(eventName);
-        }
-
         public void Dispose()
         {
             _subsManager.Clear();
+            _processor.CloseAsync().GetAwaiter().GetResult();
         }
 
-        private void RegisterSubscriptionClientMessageHandler()
+        private async Task RegisterSubscriptionClientMessageHandlerAsync()
         {
-            _subscriptionClient.RegisterMessageHandler(
-                async (message, token) =>
+            _processor.ProcessMessageAsync +=
+                async (args) =>
                 {
-                    var eventName = $"{message.Label}{INTEGRATION_EVENT_SUFFIX}";
-                    var messageData = Encoding.UTF8.GetString(message.Body);
+                    var eventName = $"{args.Message.Subject}{INTEGRATION_EVENT_SUFFIX}";
+                    string messageData = args.Message.Body.ToString();
 
                     // Complete the message so that it is not received again.
                     if (await ProcessEvent(eventName, messageData))
                     {
-                        await _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+                        await args.CompleteMessageAsync(args.Message);
                     }
-                },
-                new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 10, AutoComplete = false });
+                };
+
+            _processor.ProcessErrorAsync += ErrorHandler;
+            await _processor.StartProcessingAsync();
         }
 
-        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        private Task ErrorHandler(ProcessErrorEventArgs args)
         {
-            var ex = exceptionReceivedEventArgs.Exception;
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            var ex = args.Exception;
+            var context = args.ErrorSource;
 
             _logger.LogError(ex, "ERROR handling message: {ExceptionMessage} - Context: {@ExceptionContext}", ex.Message, context);
 
             return Task.CompletedTask;
+        }
+
+        private void RemoveDefaultRule()
+        {
+            try
+            {
+                _serviceBusPersisterConnection
+                    .AdministrationClient
+                    .DeleteRuleAsync(_topicName, _subscriptionName, RuleProperties.DefaultRuleName)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityNotFound)
+            {
+                _logger.LogWarning("The messaging entity {DefaultRuleName} Could not be found.", RuleProperties.DefaultRuleName);
+            }
         }
 
         private async Task<bool> ProcessEvent(string eventName, string message)
@@ -161,7 +186,7 @@
             var processed = false;
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
-                using (var scope = _host.Services.CreateScope())
+                using (var scope = _serviceProvider.CreateScope())
                 {
                     var subscriptions = _subsManager.GetHandlersForEvent(eventName);
                     foreach (var subscription in subscriptions)
@@ -187,21 +212,6 @@
                 processed = true;
             }
             return processed;
-        }
-
-        private void RemoveDefaultRule()
-        {
-            try
-            {
-                _subscriptionClient
-                 .RemoveRuleAsync(RuleDescription.DefaultRuleName)
-                 .GetAwaiter()
-                 .GetResult();
-            }
-            catch (MessagingEntityNotFoundException)
-            {
-                _logger.LogWarning("The messaging entity {DefaultRuleName} Could not be found.", RuleDescription.DefaultRuleName);
-            }
         }
     }
 }

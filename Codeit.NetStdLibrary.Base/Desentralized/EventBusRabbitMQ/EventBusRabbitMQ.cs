@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
@@ -14,6 +13,7 @@ using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Codeit.NetStdLibrary.Base.Common;
 
 namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
 {
@@ -26,7 +26,6 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly IServiceProvider _serviceProvider;
         private readonly int _retryCount;
-
         private IModel _consumerChannel;
         private string _queueName;
 

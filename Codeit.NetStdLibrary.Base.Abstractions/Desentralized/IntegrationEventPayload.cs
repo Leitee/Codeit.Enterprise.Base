@@ -1,11 +1,14 @@
-﻿using System;
-using Newtonsoft.Json;
-
+﻿/// <summary>
+/// Codeit Corp
+/// </summary>
 namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
 {
+    using System;
+    using System.Text.Json.Serialization;
+
     public abstract class IntegrationEventPayload
     {
-        protected IntegrationEventPayload() 
+        protected IntegrationEventPayload()
             : this(Guid.NewGuid(), DateTime.UtcNow)
         {
 
@@ -18,10 +21,10 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
             CreationDate = createDate;
         }
 
-        [JsonProperty]
+        [JsonInclude]
         public Guid Id { get; private set; }
 
-        [JsonProperty]
+        [JsonInclude]
         public DateTime CreationDate { get; private set; }
     }
 }

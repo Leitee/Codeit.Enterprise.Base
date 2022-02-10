@@ -1,35 +1,49 @@
-﻿using Microsoft.Azure.ServiceBus;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
-using System;
+﻿using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
+using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus.Administration;
 
 namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusServiceBus
 {
     public class DefaultServiceBusPersisterConnection : IServiceBusPersisterConnection
     {
-        private readonly ILogger<DefaultServiceBusPersisterConnection> _logger;
-        private readonly ServiceBusConnectionStringBuilder _serviceBusConnectionStringBuilder;
-        private ITopicClient _topicClient;
+        private readonly string _serviceBusConnectionString;
+        private ServiceBusClient _topicClient;
+        private ServiceBusAdministrationClient _subscriptionClient;
+
         bool _disposed;
 
-        public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder,
-            ILoggerFactory loggerFactory)
+        public DefaultServiceBusPersisterConnection(string serviceBusConnectionString)
         {
-            _logger = (loggerFactory ?? NullLoggerFactory.Instance).CreateLogger<DefaultServiceBusPersisterConnection>();
-
-            _serviceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ??
-                throw new ArgumentNullException(nameof(serviceBusConnectionStringBuilder));
-            _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
+            _serviceBusConnectionString = serviceBusConnectionString;
+            _subscriptionClient = new ServiceBusAdministrationClient(_serviceBusConnectionString);
+            _topicClient = new ServiceBusClient(_serviceBusConnectionString);
         }
 
-        public ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder => _serviceBusConnectionStringBuilder;
-
-        public ITopicClient CreateModel()
+        public ServiceBusClient TopicClient
         {
-            if (_topicClient.IsClosedOrClosing)
+            get
             {
-                _topicClient = new TopicClient(_serviceBusConnectionStringBuilder, RetryPolicy.Default);
+                if (_topicClient.IsClosed)
+                {
+                    _topicClient = new ServiceBusClient(_serviceBusConnectionString);
+                }
+                return _topicClient;
+            }
+        }
+
+        public ServiceBusAdministrationClient AdministrationClient
+        {
+            get
+            {
+                return _subscriptionClient;
+            }
+        }
+
+        public ServiceBusClient CreateModel()
+        {
+            if (_topicClient.IsClosed)
+            {
+                _topicClient = new ServiceBusClient(_serviceBusConnectionString);
             }
 
             return _topicClient;
@@ -40,16 +54,7 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusServiceBus
             if (_disposed) return;
 
             _disposed = true;
-
-            try
-            {
-                _topicClient.CloseAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, "Error at disposing {connection}", typeof(DefaultServiceBusPersisterConnection));
-            }
-
+            _topicClient.DisposeAsync().GetAwaiter().GetResult();
         }
     }
 }

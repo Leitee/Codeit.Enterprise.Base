@@ -4,13 +4,11 @@
 namespace Codeit.NetStdLibrary.Base.Security
 {
     using Microsoft.Extensions.Configuration;
-    using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
     using Codeit.NetStdLibrary.Base.Abstractions;
     using Codeit.NetStdLibrary.Base.Application;
     using System;
     using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
 
