@@ -21,7 +21,7 @@ namespace Codeit.NetStdLibrary.Base.Application
         private readonly IEventBus _eventBus;
         public SendCrudOperationResultFilter(ILoggerFactory loggerFactory, IEventBus eventBus)
         {
-            _logger = (loggerFactory ?? NullLoggerFactory.Instance).CreateLogger<SingleLoggerAsyncFilter>();
+            _logger = (loggerFactory ?? NullLoggerFactory.Instance).CreateLogger<SendCrudOperationResultFilter>();
             _eventBus = eventBus;
         }
 

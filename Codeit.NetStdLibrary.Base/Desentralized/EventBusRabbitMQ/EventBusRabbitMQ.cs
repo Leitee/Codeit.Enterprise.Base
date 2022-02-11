@@ -1,22 +1,23 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
-using Codeit.NetStdLibrary.Base.Desentralized.EventBus;
-using Polly;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using RabbitMQ.Client.Exceptions;
-using System;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Codeit.NetStdLibrary.Base.Common;
-
+﻿
 namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
 {
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Codeit.NetStdLibrary.Base.Abstractions.Desentralized;
+    using Codeit.NetStdLibrary.Base.Desentralized.EventBus;
+    using Polly;
+    using RabbitMQ.Client;
+    using RabbitMQ.Client.Events;
+    using RabbitMQ.Client.Exceptions;
+    using System;
+    using System.Net.Sockets;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Codeit.NetStdLibrary.Base.Common;
+
     public sealed class EventBusRabbitMQ : IEventBus, IDisposable
     {
         const string BROKER_NAME = "Codeit.Base";
@@ -25,12 +26,11 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly IServiceProvider _serviceProvider;
-        private readonly int _retryCount;
         private IModel _consumerChannel;
         private string _queueName;
 
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILoggerFactory loggerFactory,
-            IServiceProvider serviceProvider, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+            IServiceProvider serviceProvider, IEventBusSubscriptionsManager subsManager, string queueName = null)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = (loggerFactory ?? NullLoggerFactory.Instance).CreateLogger<EventBusRabbitMQ>();
@@ -38,7 +38,6 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
             _queueName = queueName;
             _consumerChannel = CreateConsumerChannel();
             _serviceProvider = serviceProvider;
-            _retryCount = retryCount;
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
         }
 
@@ -72,7 +71,7 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
 
             var policy = Policy.Handle<BrokerUnreachableException>()
                 .Or<SocketException>()
-                .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
+                .WaitAndRetry(_persistentConnection.RetryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
                 {
                     _logger.LogWarning(ex, "Could not publish event: {EventId} after {Timeout}s ({ExceptionMessage})", @event.Id, $"{time.TotalSeconds:n1}", ex.Message);
                 });

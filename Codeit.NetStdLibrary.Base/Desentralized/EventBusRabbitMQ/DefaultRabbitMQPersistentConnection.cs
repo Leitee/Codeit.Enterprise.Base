@@ -29,6 +29,8 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
             _retryCount = retryCount;
         }
 
+        public int RetryCount => _retryCount;
+
         public bool IsConnected
         {
             get
