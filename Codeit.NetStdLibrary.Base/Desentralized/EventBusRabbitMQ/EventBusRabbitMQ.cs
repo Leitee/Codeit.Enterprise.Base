@@ -48,17 +48,15 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
                 _persistentConnection.TryConnect();
             }
 
-            using (var channel = _persistentConnection.CreateModel())
-            {
-                channel.QueueUnbind(queue: _queueName,
-                    exchange: BROKER_NAME,
-                    routingKey: eventName);
+            using IModel channel = _persistentConnection.CreateModel();
+            channel.QueueUnbind(queue: _queueName,
+                exchange: BROKER_NAME,
+                routingKey: eventName);
 
-                if (_subsManager.IsEmpty)
-                {
-                    _queueName = string.Empty;
-                    _consumerChannel.Close();
-                }
+            if (_subsManager.IsEmpty)
+            {
+                _queueName = string.Empty;
+                _consumerChannel.Close();
             }
         }
 
@@ -80,31 +78,29 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
 
             _logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, eventName);
 
-            using (var channel = _persistentConnection.CreateModel())
+            using IModel channel = _persistentConnection.CreateModel();
+
+            _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
+
+            channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
+
+            var message = JsonConvert.SerializeObject(@event);
+            var body = Encoding.UTF8.GetBytes(message);
+
+            policy.Execute(() =>
             {
-
-                _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
-
-                channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
-
-                var message = JsonConvert.SerializeObject(@event);
-                var body = Encoding.UTF8.GetBytes(message);
-
-                policy.Execute(() =>
-                {
-                    var properties = channel.CreateBasicProperties();
-                    properties.DeliveryMode = 2; // persistent
+                var properties = channel.CreateBasicProperties();
+                properties.DeliveryMode = 2; // persistent
 
                     _logger.LogTrace("Publishing event to RabbitMQ: {EventId}", @event.Id);
 
-                    channel.BasicPublish(
-                        exchange: BROKER_NAME,
-                        routingKey: eventName,
-                        mandatory: true,
-                        basicProperties: properties,
-                        body: body);
-                });
-            }
+                channel.BasicPublish(
+                    exchange: BROKER_NAME,
+                    routingKey: eventName,
+                    mandatory: true,
+                    basicProperties: properties,
+                    body: body);
+            });
         }
 
         public void SubscribeDynamic<TH>(string eventName)
@@ -140,12 +136,11 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
                     _persistentConnection.TryConnect();
                 }
 
-                using (var channel = _persistentConnection.CreateModel())
-                {
-                    channel.QueueBind(queue: _queueName,
-                                      exchange: BROKER_NAME,
-                                      routingKey: eventName);
-                }
+                using IModel channel = _persistentConnection.CreateModel();
+
+                channel.QueueBind(queue: _queueName,
+                                  exchange: BROKER_NAME,
+                                  routingKey: eventName);
             }
         }
 
@@ -260,31 +255,29 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusRabbitMQ
 
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
-                using (var scope = _serviceProvider.CreateScope())
+                using IServiceScope scope = _serviceProvider.CreateScope();
+
+                var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+                foreach (var subscription in subscriptions)
                 {
-                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
-                    foreach (var subscription in subscriptions)
+                    if (subscription.IsDynamic)
                     {
-                        if (subscription.IsDynamic)
-                        {
-                            var handler = scope.ServiceProvider.GetRequiredService(subscription.HandlerType) as IDynamicIntegrationEventHandler;
-                            if (handler == null) continue;
-                            dynamic eventData = JObject.Parse(message);
+                        if (scope.ServiceProvider.GetRequiredService(subscription.HandlerType) is not IDynamicIntegrationEventHandler handler) continue;
+                        dynamic eventData = JObject.Parse(message);
 
-                            await Task.Yield();
-                            await handler.Handle(eventData);
-                        }
-                        else
-                        {
-                            var handler = scope.ServiceProvider.GetRequiredService(subscription.HandlerType);
-                            if (handler == null) continue;
-                            var eventType = _subsManager.GetEventTypeByName(eventName);
-                            var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                            var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                        await Task.Yield();
+                        await handler.Handle(eventData);
+                    }
+                    else
+                    {
+                        var handler = scope.ServiceProvider.GetRequiredService(subscription.HandlerType);
+                        if (handler == null) continue;
+                        var eventType = _subsManager.GetEventTypeByName(eventName);
+                        var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
 
-                            await Task.Yield();
-                            await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
-                        }
+                        await Task.Yield();
+                        await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
                     }
                 }
             }
