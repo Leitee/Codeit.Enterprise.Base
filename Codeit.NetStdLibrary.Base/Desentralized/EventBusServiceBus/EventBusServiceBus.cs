@@ -26,13 +26,13 @@ namespace Codeit.NetStdLibrary.Base.Desentralized.EventBusServiceBus
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
         public EventBusServiceBus(IServiceBusPersisterConnection serviceBusPersisterConnection,
-                                  ILogger<EventBusServiceBus> logger,
+                                  ILoggerFactory loggerFactory,
                                   IEventBusSubscriptionsManager subsManager,
                                   string subscriptionClientName,
                                   IServiceProvider serviceProvider)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = (loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory))).CreateLogger<EventBusServiceBus>();
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _serviceProvider = serviceProvider;
             _subscriptionName = subscriptionClientName;

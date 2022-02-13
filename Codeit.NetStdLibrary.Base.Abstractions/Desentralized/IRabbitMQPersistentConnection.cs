@@ -9,6 +9,8 @@ namespace Codeit.NetStdLibrary.Base.Abstractions.Desentralized
     public interface IRabbitMQPersistentConnection
         : IDisposable
     {
+        int RetryCount { get; }
+
         bool IsConnected { get; }
 
         bool TryConnect();
