@@ -27,13 +27,13 @@ jobs:
       run: dotnet test -c Release --no-restore --no-build --verbosity normal
     
     - name: Pack Abstractions
-      run: dotnet pack Codeit.NetStdLibrary.Base.Abstractions/Codeit.NetStdLibrary.Base.Abstractions.csproj -c Release --no-restore --no-build -o .
+      run: dotnet pack Codeit.Enterprise.Base.Abstractions/Codeit.Enterprise.Base.Abstractions.csproj -c Release --no-restore --no-build -o .
 
     - name: Publish Abstractions
       run: dotnet nuget push *.nupkg --skip-duplicate -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}
 
     - name: Pack Base
-      run: dotnet pack Codeit.NetStdLibrary.Base/Codeit.NetStdLibrary.Base.csproj -c Release --no-restore --no-build -o .
+      run: dotnet pack Codeit.Enterprise.Base/Codeit.Enterprise.Base.csproj -c Release --no-restore --no-build -o .
 
     - name: Publish Base
       run: dotnet nuget push *.nupkg --skip-duplicate -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}}

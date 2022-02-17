@@ -2,13 +2,13 @@
   <PropertyGroup Label="SDK Versions">
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>0.11.0</Version>
+    <Version>0.12.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly information">
     <Authors>Leonardo Moreno</Authors>
     <Company>Codeit Corp</Company>
-    <RepositoryUrl>https://github.com/Leitee/Codeit.NetStdLibrary.Base</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Leitee/Codeit.Enterprise.Base</RepositoryUrl>
     <PackageTags>base core library enterprise</PackageTags>
     <Copyright>Copyright © Codeit 2019</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
