@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Build information">
-    <Description>A base library for enterprise applications development. This will contain all cross-cutting concerns.</Description>
+    <Description>A base library for enterprise applications development. It contains all cross-cutting concerns.</Description>
   </PropertyGroup>
 
   <PropertyGroup Label="Publish configuraiton" Condition="true">
